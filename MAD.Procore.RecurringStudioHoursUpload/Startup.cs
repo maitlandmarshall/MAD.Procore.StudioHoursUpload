@@ -1,6 +1,10 @@
 ﻿using Hangfire;
 using MAD.API.Procore;
 using MAD.Integration.Common.Settings;
+using MAD.Procore.RecurringStudioHoursUpload.Data;
+using MAD.Procore.RecurringStudioHoursUpload.Jobs;
+using MAD.Procore.RecurringStudioHoursUpload.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -23,11 +27,17 @@ namespace MAD.Procore.RecurringStudioHoursUpload
                     IsSandbox = procoreConfig.IsSandbox
                 });
             });
+
+            serviceDescriptors.AddDbContext<StudioHourDbContext>(optionsAction: (svc, opt) => opt.UseSqlServer(svc.GetRequiredService<AppConfig>().ConnectionString));
+            serviceDescriptors.AddScoped<RecurringStudioHourUploadJob>();
+            serviceDescriptors.AddTransient<NamelyDbConnectionFactory>();
+            serviceDescriptors.AddTransient<StudioHourClient>();
+            serviceDescriptors.AddTransient<StudioProjectClient>();
         }
 
-        public async Task Configure(IGlobalConfiguration hangfireConfig)
+        public async Task Configure()
         {
-
+            
         }
     }
 }
