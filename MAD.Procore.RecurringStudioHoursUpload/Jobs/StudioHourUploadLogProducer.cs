@@ -52,13 +52,17 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
             if (lastLog != null)
                 return;
 
+            var isWeekend =
+                date.DayOfWeek == DayOfWeek.Saturday
+                || date.DayOfWeek == DayOfWeek.Sunday;
+
             var stagingTable = new StudioHourUploadLog
             {
                 ProjectId = projectId,
                 Country = country,
                 Region = region,
                 Date = date,
-                HoursPerWorker = 8,
+                HoursPerWorker = isWeekend ? 0 : 8,
                 NumberOfWorkers = numberOfWorkers
             };
 
