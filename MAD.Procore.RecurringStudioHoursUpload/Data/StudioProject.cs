@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace MAD.Procore.RecurringStudioHoursUpload.Data
@@ -9,6 +10,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Data
     {
         [Key]
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProjectId { get; set; }
 
         [Required]

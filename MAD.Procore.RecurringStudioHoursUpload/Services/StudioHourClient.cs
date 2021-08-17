@@ -12,10 +12,12 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Services
     public class StudioHourClient
     {
         private readonly NamelyDbConnectionFactory namelyDbConnectionFactory;
+        private readonly ProcoreConfig procoreConfig;
 
-        public StudioHourClient(NamelyDbConnectionFactory namelyDbConnectionFactory)
+        public StudioHourClient(NamelyDbConnectionFactory namelyDbConnectionFactory, ProcoreConfig procoreConfig)
         {
             this.namelyDbConnectionFactory = namelyDbConnectionFactory;
+            this.procoreConfig = procoreConfig;
         }
 
         public async Task<IEnumerable<vwStudioHoursByRegionAndCountry>> GetStudioHours()
@@ -26,7 +28,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Services
             using var namelyDbConnection = this.namelyDbConnectionFactory.Create();
             namelyDbConnection.Open();
 
-            return await namelyDbConnection.QueryAsync<vwStudioHoursByRegionAndCountry>(querySql);
+            return await namelyDbConnection.QueryAsync<vwStudioHoursByRegionAndCountry>(querySql, new { Region = procoreConfig.Name });
         }
     }
 }

@@ -61,9 +61,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
             modelBuilder.Entity("MAD.Procore.RecurringStudioHoursUpload.Data.StudioProject", b =>
                 {
                     b.Property<int>("ProjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .HasMaxLength(200)

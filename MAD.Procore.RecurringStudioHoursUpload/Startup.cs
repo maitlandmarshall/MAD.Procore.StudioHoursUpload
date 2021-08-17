@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using MAD.API.Procore;
+using MAD.Integration.Common.Jobs;
 using MAD.Integration.Common.Settings;
 using MAD.Procore.RecurringStudioHoursUpload.Data;
 using MAD.Procore.RecurringStudioHoursUpload.Jobs;
@@ -15,10 +16,10 @@ namespace MAD.Procore.RecurringStudioHoursUpload
         public void ConfigureServices(IServiceCollection serviceDescriptors)
         {
             serviceDescriptors.AddIntegrationSettings<AppConfig>();
+            serviceDescriptors.AddSingleton(svc => svc.GetRequiredService<AppConfig>().Procore);
             serviceDescriptors.AddSingleton<ProcoreApiClient>(svc =>
             {
-                var appConfig = svc.GetRequiredService<AppConfig>();
-                var procoreConfig = appConfig.Procore;
+                var procoreConfig = svc.GetRequiredService<ProcoreConfig>();
 
                 return new DefaultProcoreApiClientFactory().Create(new ProcoreApiClientOptions
                 {
@@ -29,15 +30,17 @@ namespace MAD.Procore.RecurringStudioHoursUpload
             });
 
             serviceDescriptors.AddDbContext<StudioHourDbContext>(optionsAction: (svc, opt) => opt.UseSqlServer(svc.GetRequiredService<AppConfig>().ConnectionString));
-            serviceDescriptors.AddScoped<RecurringStudioHourUploadJob>();
+            serviceDescriptors.AddScoped<StudioHourUploadLogConsumer>();
             serviceDescriptors.AddTransient<NamelyDbConnectionFactory>();
             serviceDescriptors.AddTransient<StudioHourClient>();
-            serviceDescriptors.AddTransient<StudioProjectClient>();
         }
 
-        public async Task Configure()
+        public void Configure(IGlobalConfiguration globalConfiguration, ProcoreConfig procoreConfig, HangfireConfig hangfireConfig)
         {
-            
+            var queueName = procoreConfig.Name.ToLower().Replace(" ", "_");
+
+            globalConfiguration.UseFilter<DelegatedQueueAttribute>(new DelegatedQueueAttribute(queueName));
+            hangfireConfig.Queues = new[] { queueName };
         }
     }
 }

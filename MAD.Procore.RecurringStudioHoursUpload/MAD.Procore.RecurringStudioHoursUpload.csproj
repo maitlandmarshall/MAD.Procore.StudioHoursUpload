@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Queries\NamelyStudioHourQuery.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="settings.default.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -26,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Jobs\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

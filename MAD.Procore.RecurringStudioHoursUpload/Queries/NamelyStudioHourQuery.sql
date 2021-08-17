@@ -25,6 +25,9 @@ AS (SELECT [Company email],
     ) p)
 SELECT COUNT([Company email]) EmailCount, Country, Region, COUNT([Company email]) * 8 as DailyStudioHours, COUNT([Company email]) * 8 * 5 as WeeklyStudioHours
 FROM NamelyUser
-WHERE [User status] = 'Active Employee' AND [Employment type] in ('Fixed term Contract', 'Max term Contract', 'Permanent')
+WHERE 
+[User status] = 'Active Employee' 
+AND [Employment type] in ('Fixed term Contract', 'Max term Contract', 'Permanent')
+AND [Region] = @Region
 GROUP BY Region, Country
 ORDER BY Country

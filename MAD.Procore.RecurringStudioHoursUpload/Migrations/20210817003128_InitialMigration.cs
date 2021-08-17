@@ -31,8 +31,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
                 name: "StudioProject",
                 columns: table => new
                 {
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },

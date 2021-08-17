@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
 {
     [DbContext(typeof(StudioHourDbContext))]
-    [Migration("20210817001501_InitialMigration")]
+    [Migration("20210817003128_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,9 +63,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
             modelBuilder.Entity("MAD.Procore.RecurringStudioHoursUpload.Data.StudioProject", b =>
                 {
                     b.Property<int>("ProjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .HasMaxLength(200)
