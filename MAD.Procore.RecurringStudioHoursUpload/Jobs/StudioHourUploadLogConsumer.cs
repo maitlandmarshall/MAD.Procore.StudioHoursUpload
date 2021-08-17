@@ -1,9 +1,13 @@
 ﻿using Hangfire;
 using MAD.API.Procore;
+using MAD.API.Procore.Endpoints.ManpowerLogs;
+using MAD.API.Procore.Endpoints.ManpowerLogs.Models;
+using MAD.API.Procore.Requests;
 using MAD.Integration.Common.Jobs;
 using MAD.Procore.RecurringStudioHoursUpload.Data;
 using MAD.Procore.RecurringStudioHoursUpload.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +32,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
         public async Task EnqueueUnprocessedStudioHourUploadLogs()
         {
             var uploadLogs = await this.studioHourDbContext.StudioHourUploadLog
-                .Where(y => y.ProcessedDate.HasValue == false)
+                .Where(y => y.ProcessedDate.HasValue == false && string.IsNullOrWhiteSpace(y.Error))
                 .ToListAsync();
 
             foreach (var ul in uploadLogs)
@@ -42,11 +46,33 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
         {
             var uploadLog = await this.studioHourDbContext.StudioHourUploadLog.FindAsync(projectId, region, country, date);
 
+            if (uploadLog.ProcessedDate.HasValue)
+                return;
+
             try
             {
-                if (uploadLog.ProcessedDate.HasValue)
-                    return;
+                if (uploadLog.HoursPerWorker > 0)
+                {
+                    var createLogRequest = new CreateManpowerLogRequest
+                    {
+                        ProjectId = projectId,
+                        Body = JsonConvert.SerializeObject(new
+                        {
+                            manpower_log = new
+                            {
+                                date = date.ToString("yyyy-MM-dd"),
+                                num_workers = uploadLog.NumberOfWorkers,
+                                num_hours = uploadLog.HoursPerWorker,
+                                notes = $"{region} {country} Office Hours"
+                            }
+                        })
+                    };
 
+                    var result = await createLogRequest.GetResponse(this.procoreApiClient);
+                    uploadLog.ProcessedManpowerLogId = result.Result.Id;
+                }
+
+                uploadLog.ProcessedDate = DateTime.Now;
             }
             catch(Exception ex)
             {
@@ -54,10 +80,8 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
             }
             finally
             {
-
+                await this.studioHourDbContext.SaveChangesAsync();
             }
         }
-
-        
     }
 }
