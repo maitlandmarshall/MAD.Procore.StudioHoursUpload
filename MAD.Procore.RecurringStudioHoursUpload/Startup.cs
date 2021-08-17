@@ -31,6 +31,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload
 
             serviceDescriptors.AddDbContext<StudioHourDbContext>(optionsAction: (svc, opt) => opt.UseSqlServer(svc.GetRequiredService<AppConfig>().ConnectionString));
             serviceDescriptors.AddScoped<StudioHourUploadLogConsumer>();
+            serviceDescriptors.AddScoped<StudioHourUploadLogProducer>();
             serviceDescriptors.AddTransient<NamelyDbConnectionFactory>();
             serviceDescriptors.AddTransient<StudioHourClient>();
         }
@@ -41,6 +42,10 @@ namespace MAD.Procore.RecurringStudioHoursUpload
 
             globalConfiguration.UseFilter<DelegatedQueueAttribute>(new DelegatedQueueAttribute(queueName));
             hangfireConfig.Queues = new[] { queueName };
+
+#if DEBUG
+            globalConfiguration.UseFilter<DisableConcurrentExecutionAttribute>(new DisableConcurrentExecutionAttribute(60 * 5));
+#endif
         }
     }
 }

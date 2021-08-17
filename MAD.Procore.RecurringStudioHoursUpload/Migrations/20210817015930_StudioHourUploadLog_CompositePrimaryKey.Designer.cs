@@ -4,14 +4,16 @@ using MAD.Procore.RecurringStudioHoursUpload.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
 {
     [DbContext(typeof(StudioHourDbContext))]
-    partial class StudioHourDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210817015930_StudioHourUploadLog_CompositePrimaryKey")]
+    partial class StudioHourUploadLog_CompositePrimaryKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

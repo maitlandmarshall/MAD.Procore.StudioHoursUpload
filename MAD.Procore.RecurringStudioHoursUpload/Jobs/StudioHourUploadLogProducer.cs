@@ -47,8 +47,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
         [DisableIdenticalQueuedItems(IncludeFailedJobs = true)]
         public async Task ValidateAndCreateLog(int projectId, string region, string country, DateTime date, int numberOfWorkers)
         {
-            var lastLog = await this.studioHourDbContext.StudioHourUploadLog
-                    .FirstOrDefaultAsync(y => y.ProjectId == projectId && y.Region == region && y.Country == country && y.Date.Date == date);
+            var lastLog = await this.studioHourDbContext.StudioHourUploadLog.FindAsync(projectId, region, country, date);
 
             if (lastLog != null)
                 return;
@@ -66,7 +65,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
             this.studioHourDbContext.StudioHourUploadLog.Add(stagingTable);
             await this.studioHourDbContext.SaveChangesAsync();
 
-            this.backgroundJobClient.Enqueue<StudioHourUploadLogConsumer>(y => y.ProcessStudioHourUpload(stagingTable.Id));
+            this.backgroundJobClient.Enqueue<StudioHourUploadLogConsumer>(y => y.ProcessStudioHourUpload(projectId, region, country, date));
         }
 
         private DateTime GetTodayUtc()

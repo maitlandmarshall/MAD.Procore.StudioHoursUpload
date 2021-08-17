@@ -22,11 +22,13 @@ namespace MAD.Procore.RecurringStudioHoursUpload
         static void MigrateAndStartRecurringJobs(IServiceProvider serviceProvider)
         {
             var dbContext = serviceProvider.GetRequiredService<StudioHourDbContext>();
+            var jobClient = serviceProvider.GetRequiredService<IBackgroundJobClient>();
+            var procoreConfig = serviceProvider.GetRequiredService<ProcoreConfig>();
+
             dbContext.Database.Migrate();
 
-            // Force Hangfire to initialize by injecting the background job client
-            var jobClient = serviceProvider.GetRequiredService<IBackgroundJobClient>();
-            JobFactory.CreateRecurringJob<StudioHourUploadLogProducer>(nameof(StudioHourUploadLogProducer), y => y.ProduceStudioHoursUploadLogs());
+            JobFactory.CreateRecurringJob<StudioHourUploadLogProducer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogProducer)}.ProduceStudioHoursUploadLogs", y => y.ProduceStudioHoursUploadLogs());
+            JobFactory.CreateRecurringJob<StudioHourUploadLogConsumer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogConsumer)}.EnqueueUnprocessedStudioHourUploadLogs", y => y.EnqueueUnprocessedStudioHourUploadLogs());
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

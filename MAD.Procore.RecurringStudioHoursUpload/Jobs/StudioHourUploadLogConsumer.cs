@@ -16,21 +16,46 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
     {
         private readonly StudioHourDbContext studioHourDbContext;
         private readonly ProcoreApiClient procoreApiClient;
+        private readonly IBackgroundJobClient backgroundJobClient;
 
-        public StudioHourUploadLogConsumer(StudioHourDbContext studioHourDbContext, ProcoreApiClient procoreApiClient)
+        public StudioHourUploadLogConsumer(StudioHourDbContext studioHourDbContext, ProcoreApiClient procoreApiClient, IBackgroundJobClient backgroundJobClient)
         {
             this.studioHourDbContext = studioHourDbContext;
             this.procoreApiClient = procoreApiClient;
+            this.backgroundJobClient = backgroundJobClient;
         }
 
-        
+        public async Task EnqueueUnprocessedStudioHourUploadLogs()
+        {
+            var uploadLogs = await this.studioHourDbContext.StudioHourUploadLog
+                .Where(y => y.ProcessedDate.HasValue == false)
+                .ToListAsync();
+
+            foreach (var ul in uploadLogs)
+            {
+                this.backgroundJobClient.Enqueue<StudioHourUploadLogConsumer>(y => y.ProcessStudioHourUpload(ul.ProjectId, ul.Region, ul.Country, ul.Date));
+            }
+        }
 
         [DisableIdenticalQueuedItems(IncludeFailedJobs = true)]
-        public async Task ProcessStudioHourUpload(int uploadLogId)
+        public async Task ProcessStudioHourUpload(int projectId, string region, string country, DateTime date)
         {
-            var uploadLog = await this.studioHourDbContext.StudioHourUploadLog.FindAsync(uploadLogId);
+            var uploadLog = await this.studioHourDbContext.StudioHourUploadLog.FindAsync(projectId, region, country, date);
 
-            throw new NotImplementedException();
+            try
+            {
+                if (uploadLog.ProcessedDate.HasValue)
+                    return;
+
+            }
+            catch(Exception ex)
+            {
+                uploadLog.Error = ex.ToString();
+            }
+            finally
+            {
+
+            }
         }
 
         
