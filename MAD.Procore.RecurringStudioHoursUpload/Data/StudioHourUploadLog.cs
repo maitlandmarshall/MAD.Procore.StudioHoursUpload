@@ -29,6 +29,8 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Data
         public int HoursPerWorker { get; set; }
 
         public DateTimeOffset? ProcessedDate { get; set; }
+        public long? ProcessedManpowerLogId { get; set; }
+
         public string Error { get; set; }
     }
 }
