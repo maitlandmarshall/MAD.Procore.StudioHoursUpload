@@ -21,18 +21,20 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
         private readonly StudioHourDbContext studioHourDbContext;
         private readonly ProcoreApiClient procoreApiClient;
         private readonly IBackgroundJobClient backgroundJobClient;
+        private readonly ProcoreConfig procoreConfig;
 
-        public StudioHourUploadLogConsumer(StudioHourDbContext studioHourDbContext, ProcoreApiClient procoreApiClient, IBackgroundJobClient backgroundJobClient)
+        public StudioHourUploadLogConsumer(StudioHourDbContext studioHourDbContext, ProcoreApiClient procoreApiClient, IBackgroundJobClient backgroundJobClient, ProcoreConfig procoreConfig)
         {
             this.studioHourDbContext = studioHourDbContext;
             this.procoreApiClient = procoreApiClient;
             this.backgroundJobClient = backgroundJobClient;
+            this.procoreConfig = procoreConfig;
         }
 
         public async Task EnqueueUnprocessedStudioHourUploadLogs()
         {
             var uploadLogs = await this.studioHourDbContext.StudioHourUploadLog
-                .Where(y => y.ProcessedDate.HasValue == false && string.IsNullOrWhiteSpace(y.Error))
+                .Where(y => y.ProcessedDate.HasValue == false && string.IsNullOrWhiteSpace(y.Error) && y.Region == procoreConfig.Name)
                 .ToListAsync();
 
             foreach (var ul in uploadLogs)
