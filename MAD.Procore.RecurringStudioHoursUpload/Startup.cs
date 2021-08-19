@@ -2,14 +2,14 @@
 using MAD.API.Procore;
 using MAD.Integration.Common.Jobs;
 using MAD.Integration.Common.Settings;
-using MAD.Procore.RecurringStudioHoursUpload.Data;
-using MAD.Procore.RecurringStudioHoursUpload.Jobs;
-using MAD.Procore.RecurringStudioHoursUpload.Services;
+using MAD.Procore.StudioHoursUpload.Data;
+using MAD.Procore.StudioHoursUpload.Jobs;
+using MAD.Procore.StudioHoursUpload.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace MAD.Procore.RecurringStudioHoursUpload
+namespace MAD.Procore.StudioHoursUpload
 {
     internal class Startup
     {

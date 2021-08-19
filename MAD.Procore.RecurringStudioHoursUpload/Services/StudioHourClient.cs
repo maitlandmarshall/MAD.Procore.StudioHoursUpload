@@ -1,13 +1,13 @@
 ﻿using Dapper;
 using MAD.Integration.Common;
-using MAD.Procore.RecurringStudioHoursUpload.Data;
+using MAD.Procore.StudioHoursUpload.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Services
+namespace MAD.Procore.StudioHoursUpload.Services
 {
     public class StudioHourClient
     {

@@ -1,14 +1,14 @@
 ﻿using Hangfire;
 using MAD.Integration.Common;
 using MAD.Integration.Common.Jobs;
-using MAD.Procore.RecurringStudioHoursUpload.Data;
-using MAD.Procore.RecurringStudioHoursUpload.Jobs;
+using MAD.Procore.StudioHoursUpload.Data;
+using MAD.Procore.StudioHoursUpload.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace MAD.Procore.RecurringStudioHoursUpload
+namespace MAD.Procore.StudioHoursUpload
 {
     class Program
     {

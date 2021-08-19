@@ -4,8 +4,8 @@ using MAD.API.Procore.Endpoints.ManpowerLogs;
 using MAD.API.Procore.Endpoints.ManpowerLogs.Models;
 using MAD.API.Procore.Requests;
 using MAD.Integration.Common.Jobs;
-using MAD.Procore.RecurringStudioHoursUpload.Data;
-using MAD.Procore.RecurringStudioHoursUpload.Services;
+using MAD.Procore.StudioHoursUpload.Data;
+using MAD.Procore.StudioHoursUpload.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
+namespace MAD.Procore.StudioHoursUpload.Jobs
 {
     public class StudioHourUploadLogConsumer
     {

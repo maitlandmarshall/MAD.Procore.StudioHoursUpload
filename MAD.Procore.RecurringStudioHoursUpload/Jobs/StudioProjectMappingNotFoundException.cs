@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
+namespace MAD.Procore.StudioHoursUpload.Jobs
 {
     [Serializable]
     internal class StudioProjectMappingNotFoundException : Exception

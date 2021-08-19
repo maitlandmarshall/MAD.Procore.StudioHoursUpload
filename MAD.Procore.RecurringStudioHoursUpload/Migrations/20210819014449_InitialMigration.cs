@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
+namespace MAD.Procore.StudioHoursUpload.Migrations
 {
     public partial class InitialMigration : Migration
     {

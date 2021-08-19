@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Data
+namespace MAD.Procore.StudioHoursUpload.Data
 {
     [Keyless]
     public class vwStudioHoursByRegionAndCountry

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MAD.Procore.RecurringStudioHoursUpload
+namespace MAD.Procore.StudioHoursUpload
 {
     public class AppConfig
     {

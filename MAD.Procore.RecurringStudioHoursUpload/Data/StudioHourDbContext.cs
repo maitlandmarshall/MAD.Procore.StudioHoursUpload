@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Data
+namespace MAD.Procore.StudioHoursUpload.Data
 {
     public class StudioHourDbContext : DbContext
     {

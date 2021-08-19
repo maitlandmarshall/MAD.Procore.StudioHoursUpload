@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MAD.Procore.RecurringStudioHoursUpload.Jobs;
+using MAD.Procore.StudioHoursUpload.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Jobs.Tests
+namespace MAD.Procore.StudioHoursUpload.Jobs.Tests
 {
     [TestClass()]
     public class StudioHourUploadLogProducerTests

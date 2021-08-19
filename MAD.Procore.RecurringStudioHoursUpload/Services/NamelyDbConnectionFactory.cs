@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Services
+namespace MAD.Procore.StudioHoursUpload.Services
 {
     public class NamelyDbConnectionFactory
     {

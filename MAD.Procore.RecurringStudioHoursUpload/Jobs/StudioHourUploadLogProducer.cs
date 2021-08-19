@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using MAD.Integration.Common.Jobs;
-using MAD.Procore.RecurringStudioHoursUpload.Data;
-using MAD.Procore.RecurringStudioHoursUpload.Services;
+using MAD.Procore.StudioHoursUpload.Data;
+using MAD.Procore.StudioHoursUpload.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MAD.Procore.RecurringStudioHoursUpload.Jobs
+namespace MAD.Procore.StudioHoursUpload.Jobs
 {
     public class StudioHourUploadLogProducer
     {
