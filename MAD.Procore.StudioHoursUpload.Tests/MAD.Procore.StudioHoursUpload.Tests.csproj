@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MAD.Procore.RecurringStudioHoursUpload\MAD.Procore.StudioHoursUpload.csproj" />
+    <ProjectReference Include="..\MAD.Procore.StudioHoursUpload\MAD.Procore.StudioHoursUpload.csproj" />
   </ItemGroup>
 
 </Project>

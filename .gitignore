@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /MAD.Procore.RecurringStudioHoursUpload/settings.default.json
+/MAD.Procore.StudioHoursUpload/settings.default.json

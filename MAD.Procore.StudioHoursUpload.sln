@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAD.Procore.StudioHoursUpload", "MAD.Procore.RecurringStudioHoursUpload\MAD.Procore.StudioHoursUpload.csproj", "{B6E8E604-7AFD-47DD-B659-1E4190C748C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAD.Procore.StudioHoursUpload", "MAD.Procore.StudioHoursUpload\MAD.Procore.StudioHoursUpload.csproj", "{B6E8E604-7AFD-47DD-B659-1E4190C748C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAD.Procore.StudioHoursUpload.Tests", "MAD.Procore.RecurringStudioHoursUpload.Tests\MAD.Procore.StudioHoursUpload.Tests.csproj", "{1BBD3838-8C4C-430B-A022-299B5C8FD36D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAD.Procore.StudioHoursUpload.Tests", "MAD.Procore.StudioHoursUpload.Tests\MAD.Procore.StudioHoursUpload.Tests.csproj", "{1BBD3838-8C4C-430B-A022-299B5C8FD36D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
