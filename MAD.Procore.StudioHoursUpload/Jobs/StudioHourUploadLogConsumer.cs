@@ -79,6 +79,7 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
             catch(Exception ex)
             {
                 uploadLog.Error = ex.ToString();
+                throw;
             }
             finally
             {
