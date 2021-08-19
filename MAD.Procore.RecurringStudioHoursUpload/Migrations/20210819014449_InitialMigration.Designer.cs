@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
 {
     [DbContext(typeof(StudioHourDbContext))]
-    [Migration("20210817015930_StudioHourUploadLog_CompositePrimaryKey")]
-    partial class StudioHourUploadLog_CompositePrimaryKey
+    [Migration("20210819014449_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,7 +35,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Error")
                         .HasColumnType("nvarchar(max)");
@@ -48,6 +48,9 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
 
                     b.Property<DateTimeOffset?>("ProcessedDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("ProcessedManpowerLogId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ProjectId", "Region", "Country", "Date");
 

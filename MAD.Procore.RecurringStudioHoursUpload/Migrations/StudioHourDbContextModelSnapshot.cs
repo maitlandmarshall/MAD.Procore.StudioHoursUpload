@@ -33,7 +33,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("Error")
                         .HasColumnType("nvarchar(max)");

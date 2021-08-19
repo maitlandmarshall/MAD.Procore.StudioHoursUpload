@@ -11,20 +11,19 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Migrations
                 name: "StudioHourUploadLog",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
                     Region = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Date = table.Column<DateTime>(type: "date", nullable: false),
                     NumberOfWorkers = table.Column<int>(type: "int", nullable: false),
                     HoursPerWorker = table.Column<int>(type: "int", nullable: false),
                     ProcessedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ProcessedManpowerLogId = table.Column<long>(type: "bigint", nullable: true),
                     Error = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StudioHourUploadLog", x => x.Id);
+                    table.PrimaryKey("PK_StudioHourUploadLog", x => new { x.ProjectId, x.Region, x.Country, x.Date });
                 });
 
             migrationBuilder.CreateTable(

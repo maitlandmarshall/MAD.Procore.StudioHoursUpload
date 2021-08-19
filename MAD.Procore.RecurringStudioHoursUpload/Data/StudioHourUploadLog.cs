@@ -20,6 +20,7 @@ namespace MAD.Procore.RecurringStudioHoursUpload.Data
         public string Country { get; set; }
 
         [Required]
+        [Column(TypeName = "date")]
         public DateTime Date { get; set; }
 
         [Required]
