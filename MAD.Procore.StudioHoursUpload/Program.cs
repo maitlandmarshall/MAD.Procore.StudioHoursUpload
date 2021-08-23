@@ -27,8 +27,10 @@ namespace MAD.Procore.StudioHoursUpload
 
             dbContext.Database.Migrate();
 
-            JobFactory.CreateRecurringJob<StudioHourUploadLogProducer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogProducer)}.ProduceStudioHoursUploadLogs", y => y.ProduceStudioHoursUploadLogs());
-            JobFactory.CreateRecurringJob<StudioHourUploadLogConsumer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogConsumer)}.EnqueueUnprocessedStudioHourUploadLogs", y => y.EnqueueUnprocessedStudioHourUploadLogs());
+            var queueName = procoreConfig.Name.ToLower().Replace(" ", "_");
+
+            JobFactory.CreateRecurringJob<StudioHourUploadLogProducer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogProducer)}.ProduceStudioHoursUploadLogs", y => y.ProduceStudioHoursUploadLogs(), queue: queueName);
+            JobFactory.CreateRecurringJob<StudioHourUploadLogConsumer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogConsumer)}.EnqueueUnprocessedStudioHourUploadLogs", y => y.EnqueueUnprocessedStudioHourUploadLogs(), queue: queueName);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
