@@ -41,7 +41,7 @@ namespace MAD.Procore.StudioHoursUpload
             var queueName = procoreConfig.Name.ToLower().Replace(" ", "_");
 
             globalConfiguration.UseFilter<DelegatedQueueAttribute>(new DelegatedQueueAttribute(queueName));
-            hangfireConfig.Queues = new[] { queueName };
+            hangfireConfig.Queues = new[] { queueName, "default" };
 
 #if DEBUG
             globalConfiguration.UseFilter<DisableConcurrentExecutionAttribute>(new DisableConcurrentExecutionAttribute(60 * 5));
