@@ -28,7 +28,7 @@ namespace MAD.Procore.StudioHoursUpload.Services
             using var namelyDbConnection = this.namelyDbConnectionFactory.Create();
             namelyDbConnection.Open();
 
-            return await namelyDbConnection.QueryAsync<vwStudioHoursByRegionAndCountry>(querySql, new { Region = procoreConfig.Name, LogDate = lastProcessedDate?.DateTime });
+            return await namelyDbConnection.QueryAsync<vwStudioHoursByRegionAndCountry>(querySql, new { Region = procoreConfig.Name, LastProcessedDate = lastProcessedDate?.DateTime });
         }
     }
 }
