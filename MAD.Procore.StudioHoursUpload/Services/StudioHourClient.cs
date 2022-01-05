@@ -20,7 +20,7 @@ namespace MAD.Procore.StudioHoursUpload.Services
             this.procoreConfig = procoreConfig;
         }
 
-        public async Task<IEnumerable<vwStudioHoursByRegionAndCountry>> GetStudioHours(DateTimeOffset? lastProcessedDate)
+        public async Task<IEnumerable<vwStudioHoursByRegionAndCountry>> GetStudioHours(DateTime? lastProcessedDate)
         {
             var querySqlPath = Path.Combine(Globals.BaseDirectory, "Queries\\NamelyStudioHourQuery.sql");
             var querySql = await File.ReadAllTextAsync(querySqlPath);
@@ -28,7 +28,7 @@ namespace MAD.Procore.StudioHoursUpload.Services
             using var namelyDbConnection = this.namelyDbConnectionFactory.Create();
             namelyDbConnection.Open();
 
-            return await namelyDbConnection.QueryAsync<vwStudioHoursByRegionAndCountry>(querySql, new { Region = procoreConfig.Name, LastProcessedDate = lastProcessedDate?.DateTime });
+            return await namelyDbConnection.QueryAsync<vwStudioHoursByRegionAndCountry>(querySql, new { Region = procoreConfig.Name, LastProcessedDate = lastProcessedDate });
         }
     }
 }

@@ -13,7 +13,10 @@ AS (SELECT [Company email],
         FROM NamelyReportKeyValue
         WHERE LogDateTime =
         (
-            SELECT MIN(LogDateTime) FROM NamelyReportKeyValue WHERE LogDateTime >= ISNULL(@LastProcessedDate, '')
+            SELECT CASE WHEN @LastProcessedDate IS NOT NULL 
+				THEN (SELECT MIN(LogDateTime) FROM NamelyReportKeyValue WHERE LogDateTime >= @LastProcessedDate)
+				ELSE (SELECT MAX(LogDateTime) FROM NamelyReportKeyValue)
+			END
         )
               AND ReportId = '53d717e8-3d3e-48cd-a53f-e12c007851a1'
               AND ColumnValue != ''

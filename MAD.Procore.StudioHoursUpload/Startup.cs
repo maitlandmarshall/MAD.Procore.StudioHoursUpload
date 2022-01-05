@@ -11,9 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace MAD.Procore.StudioHoursUpload
 {
     internal class Startup
-    {
-        private const string CronEveryXHours = "*/59 */23 * * *";
-
+    {        
         public void ConfigureServices(IServiceCollection serviceDescriptors)
         {
             serviceDescriptors.AddIntegrationSettings<AppConfig>();
@@ -43,8 +41,8 @@ namespace MAD.Procore.StudioHoursUpload
 
             var queueName = procoreConfig.Name.ToLower().Replace(" ", "_");
 
-            recurringJobManager.AddOrUpdate<StudioHourUploadLogProducer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogProducer)}.ProduceStudioHoursUploadLogs", y => y.ProduceStudioHoursUploadLogs(), CronEveryXHours, null, queueName);
-            recurringJobManager.AddOrUpdate<StudioHourUploadLogConsumer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogConsumer)}.EnqueueUnprocessedStudioHourUploadLogs", y => y.EnqueueUnprocessedStudioHourUploadLogs(), CronEveryXHours, null, queueName);
+            JobFactory.CreateRecurringJob<StudioHourUploadLogProducer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogProducer)}.ProduceStudioHoursUploadLogs", y => y.ProduceStudioHoursUploadLogs(), queue: queueName);
+            JobFactory.CreateRecurringJob<StudioHourUploadLogConsumer>($"{procoreConfig.Name}.{nameof(StudioHourUploadLogConsumer)}.EnqueueUnprocessedStudioHourUploadLogs", y => y.EnqueueUnprocessedStudioHourUploadLogs(), queue: queueName);
         }
 
         public void Configure(IGlobalConfiguration globalConfiguration, ProcoreConfig procoreConfig, HangfireConfig hangfireConfig)
