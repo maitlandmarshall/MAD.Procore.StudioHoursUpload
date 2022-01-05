@@ -34,7 +34,7 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
             //Retrieve last processed studio log and pass processed date time to GetStudioHours method
             var lastStudioLog = await this.studioHourDbContext.StudioHourUploadLog
                 .OrderByDescending(x => x.ProcessedDate)
-                .FirstOrDefaultAsync(x => x.Region == this.procoreConfig.Name && x.ProcessedDate.HasValue);
+                .FirstOrDefaultAsync(x => x.Region == this.procoreConfig.Name && x.ProcessedDate.HasValue && string.IsNullOrWhiteSpace(x.Error));
 
             var studioHours = await this.studioHourClient.GetStudioHours(lastStudioLog?.ProcessedDate);
             var today = this.GetTodayUtc();
