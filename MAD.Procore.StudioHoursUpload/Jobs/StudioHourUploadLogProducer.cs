@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MAD.Procore.StudioHoursUpload.Jobs
@@ -32,7 +31,12 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
                 .Where(y => y.Region == this.procoreConfig.Name)
                 .ToListAsync();
 
-            var studioHours = await this.studioHourClient.GetStudioHours();
+            //Retrieve last processed studio log and pass processed date time to GetStudioHours method
+            var lastStudioLog = await this.studioHourDbContext.StudioHourUploadLog
+                .OrderByDescending(x => x.ProcessedDate)
+                .FirstOrDefaultAsync(x => x.Region == this.procoreConfig.Name && x.ProcessedDate.HasValue);
+
+            var studioHours = await this.studioHourClient.GetStudioHours(lastStudioLog?.ProcessedDate);
             var today = this.GetTodayUtc();
 
             foreach (var sh in studioHours)
