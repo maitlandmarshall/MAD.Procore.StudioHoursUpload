@@ -31,42 +31,46 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
                 .Where(y => y.Region == this.procoreConfig.Name)
                 .ToListAsync();
 
-            //Retrieve last processed studio log and pass processed date time to GetStudioHours method
+            // Retrieve last processed studio log and pass processed date time to GetStudioHours method
             var lastStudioLog = await this.studioHourDbContext.StudioHourUploadLog
-                .OrderByDescending(x => x.ProcessedDate)
+                .OrderByDescending(x => x.Date)
                 .FirstOrDefaultAsync(x => x.Region == this.procoreConfig.Name);
 
             var today = this.GetTodayUtc();
-            var now = DateTime.UtcNow;
 
-            if (lastStudioLog?.ProcessedDate == null)
+            // No studio logs have been generated, create them for today
+            if (lastStudioLog is null)
             {
-                await this.ProcessStudioHours(studioProjects);
-                return;
+                await this.ProcessStudioHours(studioProjects, today);
             }
 
-            var lastProcessedDate = lastStudioLog.ProcessedDate.Value;
-            var studioLogDiff = (today - lastProcessedDate.Date).Days;
-
-            await this.ProcessStudioHours(studioProjects, lastProcessedDate.DateTime);
-
-            for (int i = 0; i < studioLogDiff; i++)
+            // Studio logs have been generated. Generate studio logs from the last log date to today
+            else
             {
-                var logDate = lastProcessedDate.DateTime.AddDays(i + 1);
-                await this.ProcessStudioHours(studioProjects, logDate > now ? now : logDate);
+                var deltaDate = lastStudioLog.Date;
+
+                do
+                {
+                    var lastLogDate = deltaDate;
+                    deltaDate = deltaDate.AddDays(1);
+
+                    await this.ProcessStudioHours(studioProjects, deltaDate, lastLogDate);
+                }
+                while (deltaDate < today);
             }
         }
 
-        private async Task ProcessStudioHours(List<StudioProject> studioProjects, DateTime? lastProcessedDate = null)
+        private async Task ProcessStudioHours(List<StudioProject> studioProjects, DateTime logDate, DateTime? lastLogDate = null)
         {
-            var studioHours = await this.studioHourClient.GetStudioHours(lastProcessedDate);
+            var studioHours = await this.studioHourClient.GetStudioHours(lastLogDate);
 
             foreach (var sh in studioHours)
             {
                 // For each studio hour row, a staging table record should be generated & eventually processed
                 // we have to know which project to associate with the studio hour record
                 var project = this.GetStudioProject(sh.Region, sh.Country, studioProjects);
-                this.backgroundJobClient.Enqueue<StudioHourUploadLogProducer>(y => y.ValidateAndCreateLog(project.ProjectId, sh.Region, sh.Country, lastProcessedDate ?? this.GetTodayUtc(), sh.EmailCount));
+
+                this.backgroundJobClient.Enqueue<StudioHourUploadLogProducer>(y => y.ValidateAndCreateLog(project.ProjectId, sh.Region, sh.Country, logDate, sh.EmailCount));
             }
         }
 
