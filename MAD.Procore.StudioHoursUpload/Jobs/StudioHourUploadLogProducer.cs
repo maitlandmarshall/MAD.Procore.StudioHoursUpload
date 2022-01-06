@@ -37,6 +37,7 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
                 .FirstOrDefaultAsync(x => x.Region == this.procoreConfig.Name);
 
             var today = this.GetTodayUtc();
+            var now = DateTime.UtcNow;
 
             if (lastStudioLog?.ProcessedDate == null)
             {
@@ -51,7 +52,8 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
 
             for (int i = 0; i < studioLogDiff; i++)
             {
-                await this.ProcessStudioHours(studioProjects, lastProcessedDate.DateTime.AddDays(i + 1));
+                var logDate = lastProcessedDate.DateTime.AddDays(i + 1);
+                await this.ProcessStudioHours(studioProjects, logDate > now ? now : logDate);
             }
         }
 
