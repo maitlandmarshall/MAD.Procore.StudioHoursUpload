@@ -49,14 +49,13 @@ namespace MAD.Procore.StudioHoursUpload.Jobs
             {
                 var deltaDate = lastStudioLog.Date;
 
-                do
+                while (deltaDate < today)
                 {
                     var lastLogDate = deltaDate;
                     deltaDate = deltaDate.AddDays(1);
 
                     await this.ProcessStudioHours(studioProjects, deltaDate, lastLogDate);
                 }
-                while (deltaDate < today);
             }
         }
 
