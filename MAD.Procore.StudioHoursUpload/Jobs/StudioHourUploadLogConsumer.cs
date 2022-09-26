@@ -2,7 +2,6 @@
 using MAD.API.Procore;
 using MAD.API.Procore.Endpoints.ManpowerLogs;
 using MAD.API.Procore.Endpoints.ManpowerLogs.Models;
-using MAD.API.Procore.Requests;
 using MAD.Integration.Common.Jobs;
 using MAD.Procore.StudioHoursUpload.Data;
 using MAD.Procore.StudioHoursUpload.Services;

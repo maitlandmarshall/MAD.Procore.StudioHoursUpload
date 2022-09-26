@@ -16,16 +16,24 @@ namespace MAD.Procore.StudioHoursUpload
         {
             serviceDescriptors.AddIntegrationSettings<AppConfig>();
             serviceDescriptors.AddSingleton(svc => svc.GetRequiredService<AppConfig>().Procore);
-            serviceDescriptors.AddSingleton<ProcoreApiClient>(svc =>
+            serviceDescriptors.AddSingleton(svc =>
             {
-                var procoreConfig = svc.GetRequiredService<ProcoreConfig>();
-
-                return new DefaultProcoreApiClientFactory().Create(new ProcoreApiClientOptions
+                var config = svc.GetRequiredService<ProcoreConfig>();
+                var apiClientOptions = new ProcoreApiClientOptions
                 {
-                    ClientId = procoreConfig.ClientId,
-                    ClientSecret = procoreConfig.ClientSecret,
-                    IsSandbox = procoreConfig.IsSandbox
-                });
+                    ClientId = config.ClientId,
+                    ClientSecret = config.ClientSecret,
+                    IsSandbox = config.IsSandbox
+                };
+
+                var httpClient = new DefaultProcoreApiClientFactory().CreateHttpClient(apiClientOptions);
+                
+                if (string.IsNullOrWhiteSpace(config.CompanyId) == false)
+                {
+                    httpClient.DefaultRequestHeaders.Add("Procore-Company-Id", config.CompanyId);
+                }
+
+                return new ProcoreApiClient(httpClient, apiClientOptions);
             });
 
             serviceDescriptors.AddDbContext<StudioHourDbContext>(optionsAction: (svc, opt) => opt.UseSqlServer(svc.GetRequiredService<AppConfig>().ConnectionString));
